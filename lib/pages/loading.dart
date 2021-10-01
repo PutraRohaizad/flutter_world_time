@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_world_time/services/quote.dart';
 import 'package:flutter_world_time/services/world_time.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -11,17 +12,24 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-  void setupWorldTime() async {
+  void setupWorldTimeAndQuote() async {
     WorldTime instance = WorldTime(location: 'Malaysia', flag: 'malaysia.jpg', url: 'Asia/Singapore');
     await instance.getTime();
+
+    // Quote instance2 = Quote(quote: "Never give up work. Work gives you meaning and purpose and life is empty without it.", author: "Stephen Hawking");
+    Quote instance2 = Quote();
+    await instance2.getQuote();
 
     Navigator.pushReplacementNamed(context, '/home', arguments: {
       'location' : instance.location,
       'flag' : instance.flag,
       'time' : instance.time,
       'isDayTime' : instance.isDayTime,
+      'quote' : instance2.quote,
+      'author' : instance2.author,
     });
     // print(instance.time);
+    // print(instance2.quote);
     // setState(() {
     //   time = instance.time;
     // });
@@ -30,7 +38,7 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
-    setupWorldTime();
+    setupWorldTimeAndQuote();
   }
 
   @override

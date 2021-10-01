@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_world_time/services/quote.dart';
 import 'package:flutter_world_time/services/world_time.dart';
 
 class Location extends StatefulWidget {
@@ -22,15 +23,20 @@ class _LocationState extends State<Location> {
 	    WorldTime(url: 'Asia/Jakarta', location: 'Jakarta', flag: 'indonesia.png'),
 	  ];
 
-  void updateTime(index) async {
+  void updateTimeAndQuote(index) async {
     WorldTime instance = locations[index];
     await instance.getTime();
+
+    Quote instance2 = Quote();
+    await instance2.getQuote();
 
     Navigator.pop(context, {
       'location' : instance.location,
       'flag' : instance.flag,
       'time' : instance.time,
       'isDayTime' : instance.isDayTime,
+      'quote' : instance2.quote,
+      'author' : instance2.author,
     });
   } 
 
@@ -52,7 +58,7 @@ class _LocationState extends State<Location> {
             child: Card(
               child: ListTile(
                 onTap: (){
-                  updateTime(index);
+                  updateTimeAndQuote(index);
                 },
                 title: Text(locations[index].location),
                 leading: CircleAvatar(
